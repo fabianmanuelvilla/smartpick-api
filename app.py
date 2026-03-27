@@ -31,7 +31,6 @@ for n in [13, 47]: PESOS_BASE[n] = 0.90
 PRIMOS_VALIDOS = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67}
 FIBONACCI_VALIDOS = {1, 2, 3, 5, 8, 13, 21, 34, 55}
 
-# --- FUNCIONES CORE ---
 def calcular_temperatura(suma, media, std):
     distancia = abs(suma - media)
     if distancia <= std * 0.5: return "ZONA ROJA — Núcleo Probable"
@@ -89,7 +88,6 @@ def generar_prediccion(config):
         }
     return None
 
-# --- ENDPOINTS REST API ---
 @app.route("/")
 def index():
     return jsonify({
@@ -128,7 +126,10 @@ def jackpot(loteria):
         ctx.verify_mode = ssl.CERT_NONE
         req = urllib.request.Request(
             urls[loteria],
-            headers={"User-Agent": "SmartPickApp/3.2"}
+            headers={
+                "User-Agent": "SmartPickApp/3.2",
+                "x-api-key": "apv_0ad9c4e9-f30e-43ad-888a-8a85f5db7825"
+            }
         )
         with urllib.request.urlopen(req, context=ctx, timeout=10) as response:
             data = json.loads(response.read().decode())
